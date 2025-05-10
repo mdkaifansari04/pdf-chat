@@ -6,4 +6,5 @@ const envFile = path.resolve(process.cwd(), `.env`);
 
 config({ path: envFile });
 
-export const { PORT } = process.env;
+export const { PORT, MONGO_URI, PINECONE_API_KEY, OPENAI_API_KEY } =
+  process.env;
