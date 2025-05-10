@@ -10,7 +10,7 @@ import { cn, getErrorMessage, getUserShortName } from '@/lib/utils';
 import useChatStore from '@/store/chat';
 import { useUser } from '@clerk/nextjs';
 import { motion } from 'framer-motion';
-import { LineChart, SendIcon, ShieldCheck, User } from 'lucide-react';
+import { SendIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import Markdown from 'react-markdown';
@@ -57,7 +57,7 @@ export default function MainResponseSection() {
 function EmptyActivity() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.7 }} className={cn('relative z-30 text-center top-20 h-full', 'opacity-100 scale-100')}>
-      <h1 className="relative z-30 mb-4 text-5xl font-semibold tracking-tighter text-black bg-clip-text bg-gradient-to-b from-gray-800 to-gray-600 dark:text-white dark:bg-gradient-to-b dark:from-black dark:to-black/70">
+      <h1 className="relative z-30 mb-4 text-6xl font-semibold tracking-tighter text-black bg-clip-text bg-gradient-to-b from-gray-800 to-gray-600 dark:text-white dark:bg-gradient-to-b dark:from-black dark:to-black/70">
         {'Welcome to PDF'} <span className="text-primary">Chat</span>{' '}
       </h1>
       <p className="relative z-30 text-xl text-gray-600 dark:text-zinc-400">Ask me anything about the PDF</p>
@@ -129,7 +129,7 @@ const PromptInputBox = () => {
   return (
     <div className="sticky px-4 py-2 shadow-none bottom-7 md:bottom-8 sm:px-6">
       <div className="flex flex-col w-full max-w-3xl gap-4 mx-auto">
-        <div className="relative bg-white border-none dark:bg-zinc-900 rounded-xl">
+        <div className="relative bg-white border-2 dark:bg-zinc-900 rounded-xl">
           <Textarea
             placeholder="What would you like to do?"
             value={prompt}
@@ -154,7 +154,7 @@ const PromptInputBox = () => {
           />
           <div className="flex items-center justify-end p-3">
             <Button
-              className={cn('px-1.5 py-1.5 h-6 rounded-lg text-sm transition-colors hover:bg-gray-200 dark:hover:bg-zinc-800 flex items-center justify-between gap-1', 'text-gray-800 dark:text-zinc-100', 'disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-zinc-900')}
+              className={cn('px-1.5 py-1.5 h-10 rounded-full text-sm transition-colors hover:bg-primary/75 dark:hover:bg-zinc-800 flex items-center justify-between gap-1', 'text-gray-800 dark:text-zinc-100', 'disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-zinc-900')}
               disabled={prompt.length === 0}
               onClick={(e) => handleSubmit(e)}
             >

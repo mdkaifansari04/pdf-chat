@@ -1,8 +1,8 @@
-import { useClerk } from "@clerk/nextjs";
-import { LogOut, MoveUpRight, Settings, CreditCard, FileText } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { FadeImg } from "./fade-img";
+import { useClerk } from '@clerk/nextjs';
+import { LogOut, MoveUpRight, Settings, CreditCard, FileText } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { FadeImg } from './fade-img';
 
 interface MenuItem {
   label: string;
@@ -44,7 +44,7 @@ export default function Profile({ name, email, avatar, subscription }: ProfilePr
             {/* Profile Info */}
             <div className="flex-1">
               <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">{name}</h2>
-              <p className="text-zinc-600 dark:text-zinc-400">{email}</p>
+              <p className="text-zinc-600 text-sm dark:text-zinc-400">{email}</p>
             </div>
           </div>
           <div className="h-px my-6 bg-zinc-200 dark:bg-zinc-800" />
