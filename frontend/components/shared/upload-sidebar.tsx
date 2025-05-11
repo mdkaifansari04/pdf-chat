@@ -16,6 +16,7 @@ import { Input } from '../ui/input';
 import ResourceLoadingView from './loading-view';
 import QueryWrapper from './wrapper';
 import useChatStore from '@/store/chat';
+import { FadeImg } from '../ui/fade-img';
 
 function UploadSidebar() {
   const [activeTab, setActiveTab] = useState('uploaded');
@@ -74,7 +75,7 @@ function UploadSidebar() {
                   {pdfs && pdfs.length === 0 ? (
                     <div className="flex h-full items-center justify-center p-4 text-center text-gray-500">
                       <div>
-                        <FileText className="mx-auto h-12 w-12 opacity-20" />
+                        <FadeImg className="w-full" src="/images/empty-pdf.svg" alt="No PDFs uploaded yet" />
                         <p className="mt-2">No PDFs uploaded yet</p>
                         <Button variant="link" onClick={() => setActiveTab('upload')} className="mt-1">
                           Upload a PDF
