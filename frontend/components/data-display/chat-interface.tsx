@@ -57,8 +57,8 @@ export default function MainResponseSection() {
 function EmptyActivity() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.7 }} className={cn('relative z-30 text-center top-20 h-full', 'opacity-100 scale-100')}>
-      <h1 className="relative z-30 mb-4 text-6xl font-semibold tracking-tighter text-black bg-clip-text bg-gradient-to-b from-gray-800 to-gray-600 dark:text-white dark:bg-gradient-to-b dark:from-black dark:to-black/70">
-        {'Welcome to PDF'} <span className="text-primary">Chat</span>{' '}
+      <h1 className="relative z-30 mb-4 text-6xl font-semibold font-onest tracking-tighter text-black bg-clip-text bg-gradient-to-b from-gray-800 to-gray-600 dark:text-white dark:bg-gradient-to-b dark:from-black dark:to-black/70">
+        {'Chat with any'} <span className="text-primary">PDF</span>{' '}
       </h1>
       <p className="relative z-30 text-xl text-gray-600 dark:text-zinc-400">Ask me anything about the PDF</p>
     </motion.div>

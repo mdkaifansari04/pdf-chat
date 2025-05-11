@@ -3,7 +3,7 @@ import { CustomRequest } from 'types/custom-request';
 import Joi from 'joi';
 import validateSchema from 'utils/validation';
 
-export const sessionValidation = (
+export const userValidation = (
   req: CustomRequest,
   res: Response,
   next: NextFunction,

@@ -1,15 +1,15 @@
 import Header from '@/components/shared/header';
 import { ClerkProvider } from '@clerk/nextjs';
 import type { Metadata } from 'next';
-import { Poppins } from 'next/font/google';
+import { Onest } from 'next/font/google';
 import './globals.css';
 import ClientProvider from './provider/client-provider';
 import { ThemeProvider } from './provider/theme-provider';
 
-const poppins = Poppins({
-  variable: '--font-poppins',
+const onest = Onest({
+  variable: '--font-onest',
   subsets: ['latin'],
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  weight: ['400', '500', '600', '700'],
 });
 export const metadata: Metadata = {
   title: 'Chat with PDF',
@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${poppins.className} antialiased`}>
+        <body className={`${onest.className} ${onest.variable} font-onest antialiased`}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             <Header />
             <ClientProvider>{children}</ClientProvider>
