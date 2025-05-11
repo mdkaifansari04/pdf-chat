@@ -1,11 +1,11 @@
 import Header from '@/components/shared/header';
+import { Toaster } from '@/components/ui/toaster';
 import { ClerkProvider } from '@clerk/nextjs';
 import type { Metadata } from 'next';
 import { Onest } from 'next/font/google';
 import './globals.css';
 import ClientProvider from './provider/client-provider';
 import { ThemeProvider } from './provider/theme-provider';
-import { Toaster } from '@/components/ui/toaster';
 
 const onest = Onest({
   variable: '--font-onest',
