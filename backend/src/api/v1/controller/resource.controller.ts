@@ -9,7 +9,7 @@ export const getResources = async (
   next: NextFunction,
 ) => {
   try {
-    const { userId } = req.value;
+    const { userId } = req.params;
     const resources = await Resource.find({ userId });
     res.status(200).json({ success: true, data: resources });
   } catch (error) {

@@ -5,6 +5,7 @@ import { Onest } from 'next/font/google';
 import './globals.css';
 import ClientProvider from './provider/client-provider';
 import { ThemeProvider } from './provider/theme-provider';
+import { Toaster } from '@/components/ui/toaster';
 
 const onest = Onest({
   variable: '--font-onest',
@@ -28,6 +29,7 @@ export default function RootLayout({
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             <Header />
             <ClientProvider>{children}</ClientProvider>
+            <Toaster />
           </ThemeProvider>
         </body>
       </html>

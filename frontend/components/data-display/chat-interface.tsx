@@ -19,7 +19,7 @@ import { CopyToClipboard } from '../action/copy-to-clipboard';
 import { ReadAloud } from '../action/read-aloud';
 
 export default function MainResponseSection() {
-  const { chat, resetChat, streamText, resetStream } = useChatStore();
+  const { chat, resetChat, streamText, resetStream, currentPdf } = useChatStore();
   const messageEndRef = useRef<HTMLDivElement | null>(null);
   const showEmptyActivity = chat.length === 0;
   const router = useRouter();
@@ -75,6 +75,7 @@ const PromptInputBox = () => {
   const handleStream = async (response: Response) => {
     const reader = response.body?.getReader();
     const decoder = new TextDecoder();
+
     let result = '';
 
     if (reader) {
@@ -104,12 +105,20 @@ const PromptInputBox = () => {
     e.stopPropagation();
 
     if (prompt.length === 0) return;
+    if (!ChatStore.currentPdf) {
+      toast({
+        variant: 'destructive',
+        title: 'No PDF selected',
+        description: 'Please select a PDF to chat with',
+      });
+      return;
+    }
     setPrompt('');
     ChatStore.setChat({ sender: 'user', message: prompt });
     chatWithDocument(
       {
         userPrompt: prompt,
-        namespace: 'pdf',
+        namespace: ChatStore.currentPdf.namespace,
         sessionId: accessSessionStorage.get()!,
         userId: user?.id!,
       },

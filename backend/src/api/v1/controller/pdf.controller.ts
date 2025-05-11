@@ -36,6 +36,7 @@ export const chatWithDocument = async (
     if (!chatSession) {
       throw new Error('Chat session not found');
     }
+    console.log(namespace);
 
     const pineconeIndex = pinecone.Index(PINECONE_INDEX_NAME);
     const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
@@ -63,6 +64,8 @@ export const chatWithDocument = async (
                    USER INPUT: ${userPrompt}`,
       },
     ];
+
+    console.log(results);
 
     // Stream response from GPT-4
     const streamedText = await streamText({
@@ -142,7 +145,6 @@ export const uploadPdf = async (
       // 3️⃣ Process PDF
       const loader = new PDFLoader(filePath);
       pageLevelDocs = await loader.load();
-      console.log(pageLevelDocs);
     } else if (fileExtension === '.docx') {
       // 4️⃣ Process DOCX (Extract Text)
       const docBuffer = fs.readFileSync(filePath);
@@ -150,16 +152,27 @@ export const uploadPdf = async (
         buffer: docBuffer,
       });
       pageLevelDocs = [{ pageContent: text, metadata: { documentName } }];
-      console.log(pageLevelDocs);
     }
 
-    // 5️⃣ Upload to Pinecone
+    if (Array.isArray(pageLevelDocs) && pageLevelDocs.length === 0) {
+      return next(
+        new ErrorResponse(
+          'No content found in the document, Please upload a valid document',
+          400,
+        ),
+      );
+    }
     const pineconeIndex = pinecone.Index(PINECONE_INDEX_NAME);
+    const pineconeres = await PineconeStore.fromDocuments(
+      pageLevelDocs!,
+      embeddings,
+      {
+        pineconeIndex,
+        namespace,
+      },
+    );
+    console.log(pineconeres);
 
-    await PineconeStore.fromDocuments(pageLevelDocs!, embeddings, {
-      pineconeIndex,
-      namespace,
-    });
     await Resource.create({
       documentName,
       documentUrl,

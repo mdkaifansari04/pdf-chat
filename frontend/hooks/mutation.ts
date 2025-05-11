@@ -7,3 +7,10 @@ export function useChatWithDocument() {
     mutationFn: pdf.chatWithDocument,
   });
 }
+
+export function useUploadDocument() {
+  return useMutation({
+    mutationKey: ['upload-document'],
+    mutationFn: pdf.uploadDocument,
+  });
+}

@@ -20,3 +20,14 @@ export interface Query {
   updatedAt: '2025-03-28T10:43:02.252Z';
   __v: number;
 }
+
+export interface Resource {
+  _id: string;
+  documentName: string;
+  documentUrl: string;
+  userId: string;
+  namespace: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}

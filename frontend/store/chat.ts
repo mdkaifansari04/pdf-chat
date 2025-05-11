@@ -1,3 +1,4 @@
+import { Resource } from '@/hooks/data-access/responseType';
 import { create } from 'zustand';
 
 export interface Message {
@@ -14,14 +15,20 @@ interface StoreSchema {
   streamText: string;
   setStreamText: (value: string) => void;
   resetStream: () => void;
+  currentPdf: Resource | null;
+  setCurrentPdf: (pdf: Resource) => void;
 }
 
 const useChatStore = create<StoreSchema>()((set, get) => ({
   chat: [],
   streamText: '',
   loading: false,
+  currentPdf: null,
   setChat: (message) => {
     set({ chat: [...get().chat, message] });
+  },
+  setCurrentPdf: (pdf) => {
+    set({ currentPdf: pdf });
   },
   resetChat: () => set({ chat: [] }),
   setLoading: (value) => set({ loading: value }),

@@ -1,8 +1,20 @@
+import axios from 'axios';
+import { ApiResponse } from './responseType';
+
+const pdfApi = axios.create({
+  baseURL: `${process.env.NEXT_PUBLIC_HOST_URL}/pdf`,
+});
+
 interface ChatWithDocumentRequest {
   sessionId: string;
   namespace: string;
   userId: string;
   userPrompt: string;
+}
+interface UploadDocumentRequest {
+  documentName: string;
+  documentUrl: string;
+  userId: string;
 }
 
 export const chatWithDocument = async (body: ChatWithDocumentRequest) => {
@@ -23,4 +35,9 @@ export const chatWithDocument = async (body: ChatWithDocumentRequest) => {
     throw new Error('Failed to fetch chat response');
   }
   return response;
+};
+
+export const uploadDocument = async (body: UploadDocumentRequest) => {
+  const { data } = await pdfApi.post<ApiResponse>('/upload', body);
+  return data;
 };
