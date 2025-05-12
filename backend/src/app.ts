@@ -1,5 +1,3 @@
-import { PORT } from './config/env';
-
 import { connectToDB } from 'config/db';
 import cookieParser from 'cookie-parser';
 import express from 'express';
@@ -8,6 +6,8 @@ import router from './api/v1/routes';
 import cors from 'cors';
 const app = express();
 connectToDB();
+
+const PORT = process.env.PORT || 5500;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
