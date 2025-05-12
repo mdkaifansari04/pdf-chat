@@ -4,6 +4,7 @@
     "moduleResolution": "NodeNext",
     "target": "es2016",
     "baseUrl": "./src",
+    "outDir": "./dist",
     "paths": {
       "@src": ["./src/*"]
     },
