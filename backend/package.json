@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
-    "start": "ts-node -r tsconfig-paths/register src/app.ts",
-    "test": "jest",
+    "start": "node dist/app.js",
     "build": "tsc",
+    "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "format": "prettier --write .",
