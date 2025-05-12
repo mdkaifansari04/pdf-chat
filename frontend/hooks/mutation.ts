@@ -1,16 +1,24 @@
 import { useMutation } from '@tanstack/react-query';
-import * as pdf from '@/hooks/data-access/pdf';
+import * as PDF from '@/hooks/data-access/pdf';
+import * as Admin from '@/hooks/data-access/admin';
 
 export function useChatWithDocument() {
   return useMutation({
     mutationKey: ['chat-with-document'],
-    mutationFn: pdf.chatWithDocument,
+    mutationFn: PDF.chatWithDocument,
   });
 }
 
 export function useUploadDocument() {
   return useMutation({
     mutationKey: ['upload-document'],
-    mutationFn: pdf.uploadDocument,
+    mutationFn: PDF.uploadDocument,
+  });
+}
+
+export function useAdminLogin() {
+  return useMutation({
+    mutationKey: ['admin-login'],
+    mutationFn: Admin.login,
   });
 }

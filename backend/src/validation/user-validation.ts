@@ -16,3 +16,16 @@ export const userRegisterValidation = (
 
   validateSchema({ schema: userSchema, req, next });
 };
+
+export const adminAuthValidation = (
+  req: CustomRequest,
+  _res: Response,
+  next: NextFunction,
+) => {
+  const adminSchema = Joi.object().keys({
+    username: Joi.string().required(),
+    password: Joi.string().required(),
+  });
+
+  validateSchema({ schema: adminSchema, req, next });
+};

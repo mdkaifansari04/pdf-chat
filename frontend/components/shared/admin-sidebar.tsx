@@ -6,10 +6,13 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import Logo from '../shared/logo';
+import { accessTokenStorage } from '@/lib/token-storage';
+import { useRouter } from 'next/navigation';
 
 export default function Sidebar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const paths = usePathname().split('/');
+  const router = useRouter();
 
   function NavItem({ href, icon: Icon, onClick, text }: { href: string; icon: any; text: string; onClick?: () => void }) {
     return (
@@ -60,7 +63,13 @@ export default function Sidebar() {
           </div>
           <div className="px-4 py-4 border-t border-gray-200 dark:border-[#1F1F23]">
             <div className="space-y-1">
-              <span className="flex cursor-pointer items-center px-3 py-2 text-sm rounded-md transition-colors text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-[#1F1F23]">
+              <span
+                onClick={() => {
+                  accessTokenStorage.delete();
+                  router.push('/admin/login');
+                }}
+                className="flex cursor-pointer items-center px-3 py-2 text-sm rounded-md transition-colors text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-[#1F1F23]"
+              >
                 <LogOut className="flex-shrink-0 mr-3 w-4 h-4" />
                 Logout
               </span>

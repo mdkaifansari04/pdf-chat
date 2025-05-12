@@ -1,4 +1,4 @@
-import { BarChart3, Calendar, FileText, Users } from 'lucide-react';
+import { BarChart3, Calendar, FileText, Loader2, Users } from 'lucide-react';
 import { Skeleton } from '../ui/skeleton';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import React from 'react';
@@ -53,6 +53,14 @@ export const ResourceCardLoadingView = () => {
       <Skeleton className="h-52 rounded-xl w-full" />
       <Skeleton className="h-52 rounded-xl w-full" />
       <Skeleton className="h-52 rounded-xl w-full" />
+    </div>
+  );
+};
+
+export const DefaultLoadingView = () => {
+  return (
+    <div className="flex items-center justify-center h-screen">
+      <Loader2 className="w-3 h-3 animate-spin" />
     </div>
   );
 };
