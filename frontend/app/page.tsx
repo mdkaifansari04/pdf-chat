@@ -5,7 +5,7 @@ import HowItWorksSection from '@/components/container/landing/how-it-works';
 import ScreenshotSection from '@/components/container/landing/screenshot-section';
 import Footer from '@/components/shared/footer';
 
-export default function LandingPage() {
+export default function page() {
   return (
     <div>
       <main className="w-full h-full container mx-auto">
