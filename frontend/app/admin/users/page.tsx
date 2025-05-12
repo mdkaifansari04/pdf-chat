@@ -1,30 +1,21 @@
 'use client';
 
 import { useState } from 'react';
-import { Search } from 'lucide-react';
+import { Search, Users } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-
-// Sample user data based on the provided JSON
-const users = [
-  {
-    _id: '681f0ddaf15d75e6f1ca7040',
-    clerkId: 'user_2wtUj5wu61LFSaZOyluZmMcRxp2',
-    name: 'kaif',
-    email: 'demo1@gmail.com',
-    __v: 0,
-  },
-];
+import { useGetAllUsers } from '@/hooks/query';
+import QueryWrapper from '@/components/shared/wrapper';
+import { SummaryCardSkeleton } from '@/components/shared/loading-view';
 
 export default function UsersPage() {
   const [searchTerm, setSearchTerm] = useState('');
+  const { data: users, isPending, isError, error } = useGetAllUsers();
 
-  // Filter users based on search term
-  const filteredUsers = users.filter((user) => {
-    return user.name.toLowerCase().includes(searchTerm.toLowerCase()) || user.email.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredUsers = users?.filter((user) => {
+    return user.name.toLowerCase().includes(searchTerm.toLowerCase()) || user.email.toLowerCase().includes(searchTerm.toLowerCase()) || user.clerkId.toLowerCase().includes(searchTerm.toLowerCase());
   });
-
   return (
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
       <div className="flex items-center justify-between">
@@ -32,14 +23,26 @@ export default function UsersPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{users.length}</div>
-          </CardContent>
-        </Card>
+        <QueryWrapper
+          data={users}
+          isError={isError}
+          isPending={isPending}
+          error={error}
+          pendingView={<SummaryCardSkeleton icon={<Users className="h-4 w-4 text-muted-foreground" />} title="Total Users" />}
+          view={
+            <>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+                  <Users className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{users?.length}</div>
+                </CardContent>
+              </Card>
+            </>
+          }
+        />
       </div>
 
       <Card>
@@ -65,13 +68,14 @@ export default function UsersPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredUsers.length === 0 ? (
+                {filteredUsers && filteredUsers.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={3} className="h-24 text-center">
                       No users found.
                     </TableCell>
                   </TableRow>
                 ) : (
+                  filteredUsers &&
                   filteredUsers.map((user) => (
                     <TableRow key={user._id}>
                       <TableCell className="font-medium">{user.name}</TableCell>

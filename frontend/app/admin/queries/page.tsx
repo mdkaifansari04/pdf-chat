@@ -8,52 +8,17 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-
-// Sample query data based on the provided JSON
-const queries = [
-  {
-    _id: '681f62b1b65b4d07f1e5163c',
-    userClerkId: 'user_2wtUj5wu61LFSaZOyluZmMcRxp2',
-    sessionId: '1746887345329',
-    messages: [
-      {
-        sender: 'user',
-        text: 'hi',
-        timestamps: '2025-05-10T14:30:22.083Z',
-        _id: '681f62feb65b4d07f1e5163f',
-      },
-      {
-        sender: 'model',
-        text: 'Hello! How can I assist you today?',
-        timestamps: '2025-05-10T14:30:22.083Z',
-        _id: '681f62feb65b4d07f1e51640',
-      },
-      {
-        sender: 'user',
-        text: 'can you tell me who is elon musk ?',
-        timestamps: '2025-05-10T14:30:50.898Z',
-        _id: '681f631ab65b4d07f1e51645',
-      },
-      {
-        sender: 'model',
-        text: "Sure, I'd be happy to provide some information about Elon Musk.\n\n**Elon Musk** is a billionaire entrepreneur, inventor, and business magnate. He was born on June 28, 1971, in Pretoria, South Africa. Musk is known for founding several high-profile technology companies, including:\n\n1. **Zip2 Corporation**: A city guide software company founded in 1996 and sold to Compaq in 1999.\n\n2. **PayPal**: An online payments system, which was sold to eBay in 2002 for $1.5 billion.\n\n3. **SpaceX**: Founded in 2002, SpaceX aims to reduce space transportation costs to enable the colonization of Mars. SpaceX has launched numerous satellites, resupplied the International Space Station (ISS), and developed the Falcon and Starship rockets.\n\n4. **Tesla, Inc.**: Musk joined Tesla in 2004, a year after its founding, and is the CEO and lead product architect. Tesla is known for producing electric vehicles and renewable energy products.\n\n5. **SolarCity**: A solar energy services company that is now a subsidiary of Tesla.\n\n6. **Neuralink**: A neurotechnology company, founded in 2016, that's developing implantable brain–machine interfaces.\n\n7. **The Boring Company**: An infrastructure and tunnel construction services company founded in 2016.\n\nMusk's work with these companies has made him a pivotal figure in the advancement of electric vehicles, sustainable energy, and space travel. As of 2021, he is one of the wealthiest people in the world.\n\nPlease note that this is a brief overview. For more detailed information, consider reading biographies about Musk or checking reliable online resources.",
-        timestamps: '2025-05-10T14:30:50.898Z',
-        _id: '681f631ab65b4d07f1e51646',
-      },
-    ],
-    createdAt: '2025-05-10T14:29:05.334Z',
-    updatedAt: '2025-05-10T14:30:50.901Z',
-    __v: 2,
-  },
-];
+import { useGetAllQueries } from '@/hooks/query';
+import { Message, Query } from '@/hooks/data-access/responseType';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function QueriesPage() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedQuery, setSelectedQuery] = useState<(typeof queries)[0] | null>(null);
+  const [selectedQuery, setSelectedQuery] = useState<Query | null>(null);
 
-  // Filter queries based on search term
-  const filteredQueries = queries.filter((query) => {
-    // Search in messages
+  const { data: queries, isFetching, isError, error } = useGetAllQueries();
+
+  const filteredQueries = queries?.filter((query) => {
     return query.messages.some((message) => message.text.toLowerCase().includes(searchTerm.toLowerCase()));
   });
 
@@ -70,7 +35,7 @@ export default function QueriesPage() {
   };
 
   // Get the first user message as a title
-  const getQueryTitle = (query: (typeof queries)[0]) => {
+  const getQueryTitle = (query: Query) => {
     const firstUserMessage = query.messages.find((m) => m.sender === 'user' && m.text.length > 5);
     return firstUserMessage ? (firstUserMessage.text.length > 30 ? firstUserMessage.text.substring(0, 30) + '...' : firstUserMessage.text) : 'Chat session';
   };
@@ -88,7 +53,7 @@ export default function QueriesPage() {
             <MessageSquare className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{queries.length}</div>
+            <div className="text-2xl font-bold">{isFetching ? <Skeleton className="h-7 w-7" /> : queries?.length}</div>
           </CardContent>
         </Card>
         <Card>
@@ -97,7 +62,7 @@ export default function QueriesPage() {
             <MessageSquare className="h-4 w-4 text-blue-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{queries.reduce((total, query) => total + query.messages.length, 0)}</div>
+            <div className="text-2xl font-bold">{isFetching ? <Skeleton className="h-7 w-7" /> : queries?.reduce((total, query) => total + query.messages.length, 0)}</div>
           </CardContent>
         </Card>
       </div>
@@ -127,14 +92,14 @@ export default function QueriesPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredQueries.length === 0 ? (
+                {filteredQueries?.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={5} className="h-24 text-center">
                       No chat sessions found.
                     </TableCell>
                   </TableRow>
                 ) : (
-                  filteredQueries.map((query) => (
+                  filteredQueries?.map((query) => (
                     <TableRow key={query._id} className="cursor-pointer hover:bg-muted/50" onClick={() => setSelectedQuery(query)}>
                       <TableCell className="font-mono text-xs">{query.sessionId}</TableCell>
                       <TableCell>{getQueryTitle(query)}</TableCell>
@@ -184,7 +149,7 @@ export default function QueriesPage() {
             </DialogHeader>
 
             <div className="space-y-4 max-h-[400px] overflow-y-auto border rounded-md p-4">
-              {selectedQuery.messages.map((message) => (
+              {selectedQuery.messages.map((message: Message) => (
                 <div key={message._id} className={`flex ${message.sender === 'user' ? 'justify-start' : 'justify-end'}`}>
                   <div className={`max-w-[80%] rounded-lg p-3 ${message.sender === 'user' ? 'bg-muted text-foreground' : 'bg-primary text-primary-foreground'}`}>
                     <div className="flex items-center gap-2 mb-1">

@@ -17,3 +17,17 @@ export const getResources = async (
     next(new ErrorResponse('Internal server error', 500));
   }
 };
+
+export const getAllResources = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const resources = await Resource.find({});
+    res.status(200).json({ success: true, data: resources });
+  } catch (error) {
+    console.log(error);
+    next(new ErrorResponse('Internal server error', 500));
+  }
+};

@@ -1,5 +1,7 @@
-import { BarChart3, Calendar, FileText, Users } from 'lucide-react';
+'use client';
 
+import React from 'react';
+import { BarChart3, Calendar, FileText, Users } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DateRangePicker } from '../action/date-range-picker';
@@ -9,38 +11,47 @@ import { TopUsersChart } from '../charts/top-users-chart';
 import { DocumentUploadBreakdownChart } from '../charts/document-upload-breakdown-chart';
 import { ResourcesUploadedChart } from '../charts/resource-uplaod-chart';
 import { QueriesPerDayChart } from '../charts/queries-per-day-chart';
+import { useState } from 'react';
+import { useGetAnalytics } from '@/hooks/query';
+import QueryWrapper from '../shared/wrapper';
+import { SummaryCardLoadingView } from '../shared/loading-view';
 
 export default function DashboardPage() {
-  // In a real application, this data would come from an API or database
-  const dashboardData = {
-    totalUsers: 125,
-    totalResources: 348,
-    totalQueries: 1256,
-    avgQueriesPerUser: 10.05,
-    avgResourcesPerUser: 2.78,
-    userGrowth: 12.5, // percentage increase from last period
-    resourceGrowth: 8.3,
-    queryGrowth: 15.2,
-    avgQueriesGrowth: 2.4,
-    avgResourcesGrowth: -1.2,
-  };
-
+  const [startDate, setStartDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
+  const { data: dashboardData, isPending, isError, error, refetch } = useGetAnalytics(startDate, endDate);
+  console.log(dashboardData);
+  React.useEffect(() => {
+    refetch();
+  }, [startDate, endDate]);
   return (
     <div className="flex min-h-screen w-full flex-col">
       <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
         <div className="flex items-center justify-between space-y-2">
           <h2 className="text-3xl font-bold tracking-tight">Analytics Dashboard</h2>
           <div className="flex items-center space-x-2">
-            <DateRangePicker />
+            <DateRangePicker setStartDate={setStartDate} setEndDate={setEndDate} />
           </div>
         </div>
-
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <SummaryCard title="Total Users" value={dashboardData.totalUsers} description="Active platform users" percentChange={dashboardData.userGrowth} icon={<Users className="h-4 w-4 text-muted-foreground" />} />
-          <SummaryCard title="Total Resources" value={dashboardData.totalResources} description="Uploaded documents" percentChange={dashboardData.resourceGrowth} icon={<FileText className="h-4 w-4 text-muted-foreground" />} />
-          <SummaryCard title="Total Queries" value={dashboardData.totalQueries} description="User interactions" percentChange={dashboardData.queryGrowth} icon={<BarChart3 className="h-4 w-4 text-muted-foreground" />} />
-          <SummaryCard title="Avg. Queries/User" value={dashboardData.avgQueriesPerUser} description="User engagement" percentChange={dashboardData.avgQueriesGrowth} precision={2} icon={<Calendar className="h-4 w-4 text-muted-foreground" />} />
-        </div>
+        <QueryWrapper
+          data={dashboardData}
+          isError={isError}
+          isPending={isPending}
+          error={error}
+          pendingView={<SummaryCardLoadingView />}
+          view={
+            <>
+              {dashboardData && (
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                  <SummaryCard title="Total Users" value={dashboardData.totalUsers} description="Active platform users" percentChange={dashboardData.userGrowth} icon={<Users className="h-4 w-4 text-muted-foreground" />} />
+                  <SummaryCard title="Total Resources" value={dashboardData.totalResources} description="Uploaded documents" percentChange={dashboardData.resourceGrowth} icon={<FileText className="h-4 w-4 text-muted-foreground" />} />
+                  <SummaryCard title="Total Queries" value={dashboardData.totalQueries} description="User interactions" percentChange={dashboardData.queryGrowth} icon={<BarChart3 className="h-4 w-4 text-muted-foreground" />} />
+                  <SummaryCard title="Avg. Queries/User" value={dashboardData.avgQueriesPerUser} description="User engagement" percentChange={dashboardData.avgQueriesGrowth} precision={2} icon={<Calendar className="h-4 w-4 text-muted-foreground" />} />
+                </div>
+              )}
+            </>
+          }
+        />
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
           <Card className="col-span-4">
@@ -48,9 +59,7 @@ export default function DashboardPage() {
               <CardTitle>User Signups Over Time</CardTitle>
               <CardDescription>Daily new user registrations</CardDescription>
             </CardHeader>
-            <CardContent className="pl-2">
-              <UserSignupsChart />
-            </CardContent>
+            <CardContent className="pl-2">{dashboardData?.userSignups ? <UserSignupsChart data={dashboardData?.userSignups || []} /> : <div>No data</div>}</CardContent>
           </Card>
 
           <Card className="col-span-3">
@@ -59,7 +68,7 @@ export default function DashboardPage() {
               <CardDescription>Users with the most interactions</CardDescription>
             </CardHeader>
             <CardContent>
-              <TopUsersChart />
+              <TopUsersChart data={dashboardData?.topInteractingUsers || []} />
             </CardContent>
           </Card>
         </div>
@@ -70,9 +79,7 @@ export default function DashboardPage() {
               <CardTitle>Document Upload Breakdown</CardTitle>
               <CardDescription>Resources uploaded per user</CardDescription>
             </CardHeader>
-            <CardContent>
-              <DocumentUploadBreakdownChart />
-            </CardContent>
+            <CardContent>{dashboardData?.resourcesUploadedByUser ? <DocumentUploadBreakdownChart data={dashboardData?.resourcesUploadedByUser || []} /> : <div>No data</div>}</CardContent>
           </Card>
 
           <Card className="col-span-4">
@@ -87,10 +94,10 @@ export default function DashboardPage() {
                   <TabsTrigger value="queries">Queries</TabsTrigger>
                 </TabsList>
                 <TabsContent value="resources">
-                  <ResourcesUploadedChart />
+                  <ResourcesUploadedChart data={dashboardData?.resourcesUploadedByUser || []} />
                 </TabsContent>
                 <TabsContent value="queries">
-                  <QueriesPerDayChart />
+                  <QueriesPerDayChart data={dashboardData?.resourcesUploadedByUser || []} />
                 </TabsContent>
               </Tabs>
             </CardContent>

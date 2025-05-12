@@ -31,3 +31,34 @@ export interface Resource {
   updatedAt: string;
   __v: number;
 }
+
+export interface TopInteractingUsers {
+  _id: string;
+  totalSessions: number;
+  sessionsWith10Messages: number;
+}
+export interface Analytics {
+  totalUsers: number;
+  totalResources: number;
+  totalQueries: number;
+  avgQueriesPerUser: number;
+  avgResourcesPerUser: number;
+  userGrowth: number;
+  resourceGrowth: number;
+  queryGrowth: number;
+  avgQueriesGrowth: number;
+  avgResourcesGrowth: number;
+  resourcesUploadedByUser: { name: string; value: number }[];
+  userSignups: { date: string; count: number }[];
+  topInteractingUsers: TopInteractingUsers[];
+}
+
+export interface User {
+  _id: string;
+  clerkId: string;
+  name: string;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}

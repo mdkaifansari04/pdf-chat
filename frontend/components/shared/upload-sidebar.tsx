@@ -17,6 +17,7 @@ import ResourceLoadingView from './loading-view';
 import QueryWrapper from './wrapper';
 import useChatStore from '@/store/chat';
 import { FadeImg } from '../ui/fade-img';
+import { CardDescription, CardTitle } from '../ui/card';
 
 function UploadSidebar() {
   const [activeTab, setActiveTab] = useState('uploaded');
@@ -102,9 +103,11 @@ function UploadSidebar() {
 
         <TabsContent value="upload" className="h-[calc(90vh-45px)] md:h-[calc(90vh-45px)]">
           <div className="flex h-full flex-col gap-2.5 p-4">
-            <Input onChange={(e) => setPdfName(e.target.value)} type="text" placeholder="Enter the name of the PDF" />
+            <CardTitle>Upload New PDF</CardTitle>
+            <CardDescription>Add a new PDF document to chat with</CardDescription>
+            <Input onChange={(e) => setPdfName(e.target.value)} type="text" placeholder="Enter document name" />
             <PrimaryUploadButton endPoint="documentUploader" setResourceUrl={setPdfUrl} />
-            <Button disabled={isUploading} onClick={handleUpload} size={'sm'} variant="outline" className="w-full cursor-pointer">
+            <Button disabled={isUploading || pdfName.length == 0 || pdfUrl.length === 0} onClick={handleUpload} size={'sm'} variant="outline" className="w-full cursor-pointer">
               Upload {isUploading && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}
             </Button>
           </div>

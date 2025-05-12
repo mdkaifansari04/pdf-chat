@@ -11,14 +11,20 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-export function DateRangePicker() {
+export function DateRangePicker({ setStartDate, setEndDate }: { setStartDate: (date: string) => void; setEndDate: (date: string) => void }) {
+  const today = new Date();
   const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(2025, 4, 3),
-    to: new Date(2025, 4, 10),
+    from: addDays(today, -7),
+    to: today,
   });
+  const fromDate = date?.from?.toISOString().split('T')[0]; // "2025-05-03"
+  const toDate = date?.to?.toISOString().split('T')[0]; // "2025-05-10"
+  React.useEffect(() => {
+    setStartDate(fromDate ?? '');
+    setEndDate(toDate ?? '');
+  }, [fromDate, toDate]);
 
-  const [preset, setPreset] = React.useState<string>('custom');
-
+  const [preset, setPreset] = React.useState<string>('last7days');
   const handlePresetChange = (value: string) => {
     setPreset(value);
 

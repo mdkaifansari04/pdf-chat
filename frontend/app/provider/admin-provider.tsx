@@ -17,7 +17,7 @@ const AuthWrapper = ({ children }: PropsWithChildren<{}>) => {
   if (isAdminAuthenticated === null) return null;
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen overflow-hidden">
       <Sidebar />
       <div className="flex flex-col flex-1 w-full">
         <main className="flex-1 overflow-auto p-6 bg-white dark:bg-[#0F0F12]">{children}</main>
