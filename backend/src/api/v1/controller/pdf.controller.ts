@@ -18,6 +18,7 @@ import path from 'path';
 import mammoth from 'mammoth';
 import { PDFLoader } from '@langchain/community/document_loaders/fs/pdf';
 import Resource from '../model/resource.model';
+import { Document } from '@langchain/core/documents';
 
 const embeddings = new OpenAIEmbeddings({
   model: OPENAI_EMBEDDING_MODEL,
@@ -139,7 +140,7 @@ export const uploadPdf = async (
     const filePath = path.join(uploadsDir, `${documentName}${fileExtension}`);
     fs.writeFileSync(filePath, Buffer.from(arrayBuffer));
 
-    let pageLevelDocs;
+    let pageLevelDocs: Document[] = [];
 
     if (fileExtension === '.pdf') {
       // 3️⃣ Process PDF
@@ -154,7 +155,7 @@ export const uploadPdf = async (
       pageLevelDocs = [{ pageContent: text, metadata: { documentName } }];
     }
 
-    if (Array.isArray(pageLevelDocs) && pageLevelDocs.length === 0) {
+    if (pageLevelDocs.length === 0) {
       return next(
         new ErrorResponse(
           'No content found in the document, Please upload a valid document',
@@ -163,15 +164,10 @@ export const uploadPdf = async (
       );
     }
     const pineconeIndex = pinecone.Index(PINECONE_INDEX_NAME);
-    const pineconeres = await PineconeStore.fromDocuments(
-      pageLevelDocs!,
-      embeddings,
-      {
-        pineconeIndex,
-        namespace,
-      },
-    );
-    console.log(pineconeres);
+    await PineconeStore.fromDocuments(pageLevelDocs!, embeddings, {
+      pineconeIndex,
+      namespace,
+    });
 
     await Resource.create({
       documentName,

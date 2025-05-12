@@ -1,7 +1,7 @@
-import { connectToDB } from 'config/db';
+import { connectToDB } from './config/db';
 import cookieParser from 'cookie-parser';
 import express from 'express';
-import errorHandler from 'middleware/error';
+import errorHandler from './middleware/error';
 import router from './api/v1/routes';
 import cors from 'cors';
 const app = express();
