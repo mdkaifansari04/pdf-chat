@@ -21,6 +21,6 @@ app.use('/api/v1', router);
 
 app.use(errorHandler);
 
-app.listen(PORT ?? 5500, () => {
+app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
