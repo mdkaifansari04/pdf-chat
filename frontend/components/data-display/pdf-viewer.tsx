@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 
-// Set up the worker for PDF.js
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 interface PDFViewerProps {
@@ -22,7 +21,6 @@ export function PDFViewer({ pdfUrl }: PDFViewerProps) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
-  // Reset state when PDF URL changes
   useEffect(() => {
     setPageNumber(1);
     setScale(1.0);
@@ -64,7 +62,6 @@ export function PDFViewer({ pdfUrl }: PDFViewerProps) {
 
   return (
     <div className="flex h-full flex-col">
-      {/* PDF Controls */}
       <div className="flex items-center justify-between border-b p-2">
         <div className="flex items-center space-x-1">
           <Button variant="outline" size="icon" onClick={previousPage} disabled={pageNumber <= 1} className="h-8 w-8">

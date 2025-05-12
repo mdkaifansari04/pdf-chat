@@ -160,7 +160,6 @@ export function page() {
 
   return (
     <div className={cn('flex h-[90vh] w-full max-w-7xl flex-col overflow-hidden rounded-xl border bg-white shadow-lg md:flex-row', isFullscreen && 'fixed inset-0 z-50 h-screen max-w-none rounded-none')}>
-      {/* Sidebar */}
       <div className="w-full border-b md:w-1/4 md:border-b-0 md:border-r">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full">
           <TabsList className="grid w-full grid-cols-2">

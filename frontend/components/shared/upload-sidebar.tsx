@@ -18,6 +18,7 @@ import QueryWrapper from './wrapper';
 import useChatStore from '@/store/chat';
 import { FadeImg } from '../ui/fade-img';
 import { CardDescription, CardTitle } from '../ui/card';
+import { PDFPreviewDialog } from '../data-display/pdf-preview-dialog';
 
 function UploadSidebar() {
   const [activeTab, setActiveTab] = useState('uploaded');
@@ -87,9 +88,12 @@ function UploadSidebar() {
                     <ul className="space-y-1 p-2">
                       {pdfs?.map((pdf) => (
                         <li key={pdf._id} onClick={() => setCurrentPdf(pdf)} className={cn('flex items-center justify-between rounded-md px-3 py-2 cursor-pointer', currentPdf?._id === pdf._id && 'bg-primary/40 font-medium')}>
-                          <div className="flex items-center space-x-2 truncate">
-                            <FileText className="h-4 w-4 shrink-0 text-gray-500" />
-                            <span className="truncate text-sm font-medium">{pdf.documentName}</span>
+                          <div className="flex items-center justify-between w-full">
+                            <div className="flex items-center space-x-2 truncate">
+                              <FileText className="h-4 w-4 shrink-0 text-gray-500" />
+                              <span className="truncate text-sm font-medium">{pdf.documentName}</span>
+                            </div>
+                            <PDFPreviewDialog pdfName={pdf.documentName} pdfUrl={pdf.documentUrl} />
                           </div>
                         </li>
                       ))}
