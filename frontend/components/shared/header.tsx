@@ -12,7 +12,7 @@ function Header() {
   const isAdmin = pathname.includes('admin');
   if (isAdmin) return null;
   return (
-    <div className="flex justify-between items-center py-4 px-10 border-b">
+    <div className="flex justify-between items-center py-4 md:px-10 px-4 border-b">
       <Logo />
       <div className="flex items-center space-x-3">
         <ModeToggle />
