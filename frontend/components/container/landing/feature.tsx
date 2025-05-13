@@ -4,12 +4,12 @@ import { Upload, MessageSquare, Zap, FileText, CheckCircle } from 'lucide-react'
 
 function Feature() {
   return (
-    <section id="features" className="container space-y-6 bg-slate-50 py-8 dark:bg-transparent md:py-12 lg:py-24">
+    <section id="features" className="container space-y-6 bg-slate-50 py-8 dark:bg-transparent md:py-12 lg:py-24 px-4 md:px-0">
       <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
         <h2 className="font-bold text-3xl leading-[1.1] sm:text-3xl md:text-5xl">Powerful Features</h2>
         <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">Our platform offers everything you need to interact with your PDF documents intelligently.</p>
       </div>
-      <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
+      <div className="mx-auto grid justify-center gap-4 grid-cols-1 md:max-w-[64rem] md:grid-cols-3">
         <Card className="border-none shadow-md">
           <CardHeader>
             <Upload className="h-10 w-10 text-primary" />

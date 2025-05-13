@@ -19,7 +19,7 @@ import { Input } from '../ui/input';
 import ResourceLoadingView from './loading-view';
 import QueryWrapper from './wrapper';
 
-function UploadSidebar() {
+function UploadSidebar({ className }: { className?: string }) {
   const [activeTab, setActiveTab] = useState('uploaded');
   const { userId } = useAuth();
   const { data: pdfs, isPending, isError, error } = useGetResources(userId || '');
@@ -56,7 +56,7 @@ function UploadSidebar() {
   };
 
   return (
-    <div className="w-full border-b md:w-1/4 md:border-b-0 md:border-r">
+    <div className={cn('w-full mt-8 md:mt-0 hidden md:block border-b md:w-1/4 md:border-b-0 md:border-r', className)}>
       <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full rounded-none">
         <TabsList className="grid w-full grid-cols-2 rounded-none">
           <TabsTrigger value="uploaded">Uploaded PDFs</TabsTrigger>
