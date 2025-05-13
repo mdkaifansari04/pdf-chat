@@ -4,8 +4,9 @@ import * as Analytics from '@/hooks/data-access/analytics';
 
 export function useGetResources(userId: string) {
   return useQuery({
-    queryKey: ['resources'],
-    queryFn: () => Resource.getResearchPapers(userId),
+    queryKey: ['resources', userId],
+    queryFn: () => Resource.getResources(userId),
+    enabled: !!userId,
   });
 }
 

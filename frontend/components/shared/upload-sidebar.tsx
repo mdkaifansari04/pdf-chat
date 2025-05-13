@@ -3,22 +3,21 @@
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Resource } from '@/hooks/data-access/responseType';
 import { useUploadDocument } from '@/hooks/mutation';
 import { useGetResources } from '@/hooks/query';
 import { useToast } from '@/hooks/use-toast';
 import { cn, getErrorMessage } from '@/lib/utils';
+import useChatStore from '@/store/chat';
 import { useAuth } from '@clerk/nextjs';
 import { FileText, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import PrimaryUploadButton from '../action/primary-upload-button';
+import { PDFPreviewDialog } from '../data-display/pdf-preview-dialog';
+import { CardDescription, CardTitle } from '../ui/card';
+import { FadeImg } from '../ui/fade-img';
 import { Input } from '../ui/input';
 import ResourceLoadingView from './loading-view';
 import QueryWrapper from './wrapper';
-import useChatStore from '@/store/chat';
-import { FadeImg } from '../ui/fade-img';
-import { CardDescription, CardTitle } from '../ui/card';
-import { PDFPreviewDialog } from '../data-display/pdf-preview-dialog';
 
 function UploadSidebar() {
   const [activeTab, setActiveTab] = useState('uploaded');
